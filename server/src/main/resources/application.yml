@@ -15,3 +15,27 @@ influx:
   token: token
   bucket: sensor
   org: default
+
+notify:
+  sms:
+    enabled: true
+    regionId: cn-hangzhou
+    accessKeyId: YOUR_AK
+    accessKeySecret: YOUR_SK
+    signName: 松柏守护
+    templateCode: SMS_0000001
+    toPhones: 13800000000,13900000000
+  voice:
+    enabled: true
+    regionId: cn-hangzhou
+    accessKeyId: YOUR_AK
+    accessKeySecret: YOUR_SK
+    calledShowNumber: 02500000000
+    ttsCode: TTS_0000001
+    toPhones: 13800000000,13900000000
+  wechat:
+    enabled: true
+    appId: YOUR_APP_ID
+    appSecret: YOUR_APP_SECRET
+    templateId: YOUR_TEMPLATE_ID
+    toOpenIds: oAbcd12345,oEfgh67890

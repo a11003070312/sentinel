@@ -20,6 +20,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.integration:spring-integration-mqtt:5.5.9'
     implementation 'com.influxdb:influxdb-client-java:6.9.0'
+    // Aliyun SMS & Voice
+    implementation 'com.aliyun:aliyun-java-sdk-core:4.6.0'
+    implementation 'com.aliyun:aliyun-java-sdk-dysmsapi:2.0.1'
+    implementation 'com.aliyun:aliyun-java-sdk-dyvmsapi:3.0.0'
+    // HTTP client for WeChat
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
