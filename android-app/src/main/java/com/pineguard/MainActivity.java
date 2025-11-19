@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import androidx.annotation.SuppressLint;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer longPressTimer;
     private Vibrator vibrator;
     private MediaPlayer pressSound;
+    private MqttRepository mqtt;
+    private String deviceId;
 
     private static final long HOLD_DURATION = 3000;
 
@@ -30,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         pressSound = MediaPlayer.create(this, R.raw.sound_click);
+
+        deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        mqtt = new MqttRepository();
+        try {
+            mqtt.connect("tcp://broker.emqx.io:1883", "pg-" + deviceId);
+        } catch (Exception e) {
+            // ignore
+        }
 
         startService(new Intent(this, FallDetectionService.class));
 

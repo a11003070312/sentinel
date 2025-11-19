@@ -9,6 +9,7 @@ import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.pineguard.databinding.ActivityAlertBinding;
@@ -19,6 +20,8 @@ public class AlertActivity extends AppCompatActivity {
     private CountDownTimer alertTimer;
     private ToneGenerator toneGenerator;
     private boolean isAlarmSent = false;
+    private MqttRepository mqtt;
+    private String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,14 @@ public class AlertActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         toneGenerator = new ToneGenerator(AudioManager.STREAM_ALARM, 100);
+
+        deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        mqtt = new MqttRepository();
+        try {
+            mqtt.connect("tcp://broker.emqx.io:1883", "pg-" + deviceId);
+        } catch (Exception e) {
+            // ignore
+        }
 
         startCountdown();
 
@@ -63,6 +74,12 @@ public class AlertActivity extends AppCompatActivity {
         isAlarmSent = true;
 
         toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 1000);
+
+        try {
+            mqtt.publishAlarm("sentinel/device/" + deviceId + "/alarm", "{\"prob\":1,\"ts\":" + System.currentTimeMillis() + "}");
+        } catch (Exception e) {
+            // ignore
+        }
 
         binding.tvCountDown.setTextSize(30);
         binding.tvCountDown.setText("已呼叫");
