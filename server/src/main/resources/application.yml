@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: pineguard-server
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  redis:
+    host: localhost
+    port: 6379
+
+influx:
+  url: http://localhost:8086
+  token: token
+  bucket: sensor
+  org: default

@@ -1,0 +1,9 @@
+<resources>
+    <color name="bg_warm">#F5F5F5</color>
+    <color name="urgent_red">#D93025</color>
+    <color name="urgent_red_dark">#B02015</color>
+    <color name="safe_green">#34A853</color>
+    <color name="safe_green_dark">#25803B</color>
+    <color name="text_primary">#000000</color>
+    <color name="text_secondary">#555555</color>
+</resources>
