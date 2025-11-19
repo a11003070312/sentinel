@@ -12,10 +12,12 @@ import java.util.List;
 public class AlarmEventService {
     private final RedisTemplate<String, String> redisTemplate;
     private final NotificationStrategyFactory notifierFactory;
+    private final AlarmEventPublisher publisher;
 
-    public AlarmEventService(RedisTemplate<String, String> redisTemplate, NotificationStrategyFactory notifierFactory) {
+    public AlarmEventService(RedisTemplate<String, String> redisTemplate, NotificationStrategyFactory notifierFactory, AlarmEventPublisher publisher) {
         this.redisTemplate = redisTemplate;
         this.notifierFactory = notifierFactory;
+        this.publisher = publisher;
     }
 
     public void triggerAlarm(String deviceId, String payload) {
@@ -30,10 +32,8 @@ public class AlarmEventService {
         try {
             System.out.println("触发报警: " + deviceId + " - " + payload);
 
-            List<Notifier> notifiers = notifierFactory.createNotifiers(deviceId);
-            for (Notifier notifier : notifiers) {
-                notifier.notify(deviceId, "跌倒报警");
-            }
+            // 异步发布到优先级队列
+            publisher.publish(deviceId, payload);
         } finally {
             // 可选：提前释放锁 (自动过期也可)
         }

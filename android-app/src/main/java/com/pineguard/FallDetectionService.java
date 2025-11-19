@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -25,6 +26,9 @@ public class FallDetectionService extends Service implements SensorEventListener
     private HandlerThread inferenceThread;
     private Handler inferenceHandler;
     private TFLiteClassifier classifier = new TFLiteClassifier();
+    private MqttRepository mqtt;
+    private String deviceId;
+    private Handler heartbeatHandler;
 
     private static final float THRESHOLD_IMPACT = 24.5f; // ~2.5g
 
@@ -44,6 +48,23 @@ public class FallDetectionService extends Service implements SensorEventListener
         inferenceThread = new HandlerThread("InferenceThread");
         inferenceThread.start();
         inferenceHandler = new Handler(inferenceThread.getLooper());
+
+        deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        mqtt = new MqttRepository();
+        try {
+            mqtt.connect("tcp://broker.emqx.io:1883", "pg-" + deviceId);
+        } catch (Exception ignored) {}
+        heartbeatHandler = new Handler();
+        heartbeatHandler.postDelayed(new Runnable() {
+            @Override public void run() {
+                try {
+                    mqtt.publishAlarm("sentinel/device/" + deviceId + "/telemetry", "{\"ts\":" + System.currentTimeMillis() + "}");
+                } catch (Exception ignored) {}
+                heartbeatHandler.postDelayed(this, 30000);
+            }
+        }, 30000);
+
+        classifier.loadModelFromAsset(this, "model.tflite");
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager != null) {
@@ -71,6 +92,7 @@ public class FallDetectionService extends Service implements SensorEventListener
         super.onDestroy();
         if (sensorManager != null) sensorManager.unregisterListener(this);
         if (inferenceThread != null) inferenceThread.quitSafely();
+        if (heartbeatHandler != null) heartbeatHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
