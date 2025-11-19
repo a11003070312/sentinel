@@ -1,4 +1,4 @@
-package main.java.com.pineguard.service;
+package com.pineguard.service;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;

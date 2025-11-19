@@ -1,4 +1,4 @@
-package main.java.com.pineguard.notifier;
+package com.pineguard.notifier;
 
 import org.springframework.stereotype.Component;
 

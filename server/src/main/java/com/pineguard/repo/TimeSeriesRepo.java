@@ -1,4 +1,4 @@
-package main.java.com.pineguard.repo;
+package com.pineguard.repo;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;

@@ -1,6 +1,6 @@
-package main.java.com.pineguard.handler;
+package com.pineguard.handler;
 
-import main.java.com.pineguard.service.AlarmEventService;
+import com.pineguard.service.AlarmEventService;
 import org.springframework.stereotype.Service;
 
 @Service

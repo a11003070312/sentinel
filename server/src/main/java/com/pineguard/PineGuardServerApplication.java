@@ -1,4 +1,4 @@
-package main.java.com.pineguard;
+package com.pineguard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

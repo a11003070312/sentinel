@@ -1,7 +1,7 @@
-package main.java.com.pineguard.config;
+package com.pineguard.config;
 
-import main.java.com.pineguard.handler.MqttInboundHandler;
-import main.java.com.pineguard.service.DeviceKeepAliveService;
+import com.pineguard.handler.MqttInboundHandler;
+import com.pineguard.service.DeviceKeepAliveService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;

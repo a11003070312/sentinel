@@ -1,7 +1,7 @@
-package main.java.com.pineguard.service;
+package com.pineguard.service;
 
-import main.java.com.pineguard.notifier.NotificationStrategyFactory;
-import main.java.com.pineguard.notifier.Notifier;
+import com.pineguard.notifier.NotificationStrategyFactory;
+import com.pineguard.notifier.Notifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

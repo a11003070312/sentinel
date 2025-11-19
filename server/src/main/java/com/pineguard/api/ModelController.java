@@ -1,4 +1,4 @@
-package main.java.com.pineguard.api;
+package com.pineguard.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
